@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball Admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="top-nav"><a href="index.html">Standings</a><a href="matches.html">Matches</a><a class="active"
+            href="admin.html">Admin</a><a href="players.html">Teams</a></nav>
+    <main class="container wide">
+        
+        <div class="tabs"><button class="tab-button active" data-tab="group">Group Scores</button><button
+                class="tab-button" data-tab="playoffs">Playoff Scores</button></div>
+        <section id="groupTab">
+            <div id="adminGroupMatches"></div>
+        </section>
+        <section id="playoffsTab" class="hidden">
+            <div id="adminPlayoffMatches"></div>
+        </section>
+
+        <div class="admin-actions card">
+
+        <div class="admin-header-row">
+            <input
+                id="tournamentName"
+                class="input-field"
+                placeholder="Tournament">
+
+            <input
+                id="startTime"
+                class="input-field time-field"
+                type="time">
+            </div>
+
+            <button id="saveSettingsBtn" class="primary-button">
+                Save Settings
+            </button>
+
+            <button id="generateTournamentBtn" class="primary-button">
+                Generate Tournament
+            </button>
+
+            <button id="generatePlayoffsBtn" class="primary-button">
+                Generate Playoffs
+            </button>
+
+            <button id="resetTournamentBtn" class="danger-button">
+                Reset Matches
+            </button>
+
+        </div>
+    </main>
+    <script type="module" src="admin.js"></script>
+</body>
+
+</html>

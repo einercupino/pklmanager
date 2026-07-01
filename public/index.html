@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball Standings</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="top-nav"><a class="active" href="index.html">Standings</a><a href="matches.html">Matches</a><a
+            href="admin.html">Admin</a><a href="players.html">Teams</a></nav>
+    <main class="container">
+        <h1 id="tournamentTitle"></h1>
+        <div class="tabs"><button class="tab-button active" data-tab="group">Group Stage</button><button
+                class="tab-button" data-tab="playoffs">Playoffs</button></div>
+        <section id="groupTab">
+            <div id="groupSummary" class="summary-card"></div>
+            <div class="table-wrap">
+                <table class="standings-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>W</th>
+                            <th>L</th>
+                            <th>PF</th>
+                            <th>PA</th>
+                            <th>Diff</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standingsBody"></tbody>
+                </table>
+            </div>
+        </section>
+        <section id="playoffsTab" class="hidden">
+            <div id="playoffStandings"></div>
+        </section>
+    </main>
+    <script type="module" src="index.js"></script>
+</body>
+
+</html>

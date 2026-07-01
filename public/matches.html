@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball Matches</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="top-nav"><a href="index.html">Standings</a><a class="active" href="matches.html">Matches</a><a
+            href="admin.html">Admin</a><a href="players.html">Teams</a></nav>
+    <main class="container wide">
+        <div class="tabs"><button class="tab-button active" data-tab="group">Group Stage</button><button
+                class="tab-button" data-tab="playoffs">Playoffs</button></div>
+        <section id="groupTab">
+            <div class="section-header">
+                <h2>Live Matches</h2><span id="groupProgress"></span>
+            </div>
+            <div id="liveMatches" class="live-grid"></div>
+            <h2>Upcoming</h2>
+            <div id="upcomingMatches" class="compact-list"></div>
+            <h2>Completed</h2>
+            <div id="completedMatches" class="compact-list"></div>
+        </section>
+        <section id="playoffsTab" class="hidden">
+            <div id="playoffMatches"></div>
+        </section>
+    </main>
+    <script type="module" src="matches.js"></script>
+</body>
+
+</html>

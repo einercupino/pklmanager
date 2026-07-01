@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pickleball Teams</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="index.html">Standings</a>
+    <a href="matches.html">Matches</a>
+    <a href="admin.html">Admin</a>
+    <a class="active" href="players.html">Teams</a>
+  </nav>
+
+  <main class="container wide">
+
+    <div class="tabs">
+      <button class="tab-button active" data-tab="players">Players</button>
+      <button class="tab-button" data-tab="teams">Teams</button>
+    </div>
+
+    <section id="playersTab">
+      <div class="card form-row single-line-player-form">
+        <input id="playerName" class="input-field" placeholder="Player name">
+        <select id="playerSkill" class="input-field skill-select">
+          <option value="1" selected>1 - Never played</option>
+          <option value="2">2 - Played once or twice</option>
+          <option value="3">3 - Plays once a month</option>
+          <option value="4">4 - Plays once a week</option>
+          <option value="5">5 - Plays a lot</option>
+        </select>
+        <button id="addPlayerBtn" class="primary-button">Add Player</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Addiction</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="playersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="teamsTab" class="hidden">
+      <div class="card action-row">
+        <button id="generateTeamsBtn" class="primary-button">🎲 Shuffle Teams</button>
+        <button id="saveTeamsBtn" class="primary-button">Save Teams</button>
+        <span id="teamValidation"></span>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap no-shadow">
+          <table class="standings-table">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Addiction</th>
+                <th>Team #</th>
+              </tr>
+            </thead>
+            <tbody id="teamAssignmentsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="teamsList"></div>
+    </section>
+  </main>
+
+  <script type="module" src="players.js"></script>
+</body>
+</html>
