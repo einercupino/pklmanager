@@ -107,92 +107,6 @@ function renderAdmin() {
   document.querySelectorAll('[data-unlock]').forEach((btn) => btn.addEventListener('click', unlockMatch));
 }
 
-function scoreCard(m, matchNo) {
-  const teamCount = getRealTeamCount(state.players, state.settings);
-  const a = teamLabel(m.teamA, state.teams, teamCount);
-  const b = teamLabel(m.teamB, state.teams, teamCount);
-
-  if (m.bye) {
-    return `
-      <div class="admin-match-card bye-card">
-
-        <div class="admin-match-top">
-          <div class="admin-match-info">
-            Match ${m.id} • Court ${m.court} • ${m.time || ''}
-          </div>
-
-          <button class="lock-btn" disabled>
-            ✓ BYE
-          </button>
-        </div>
-
-        <div class="admin-score-inline">
-          <span class="team-name">${a}</span>
-
-          <input class="score-input" value="0" disabled>
-
-          <span class="vs">vs</span>
-
-          <input class="score-input" value="0" disabled>
-
-          <span class="team-name">${b}</span>
-        </div>
-
-      </div>
-    `;
-  }
-
-  return `
-    <div class="admin-match-card">
-
-      <div class="admin-match-top">
-
-        <div class="admin-match-info">
-          Match ${m.match_num} • Court ${m.court} • ${m.time || ''}
-        </div>
-
-        ${
-          m.locked
-            ? `<button class="lock-btn" data-unlock="${m.id}">Unlock</button>`
-            : `<button class="lock-btn" data-lock="${m.id}">Lock</button>`
-        }
-
-      </div>
-
-      <div class="admin-score-inline">
-
-        <span class="team-name">
-          ${a}
-        </span>
-
-        <input
-          id="${m.id}_a"
-          class="score-input"
-          type="number"
-          min="0"
-          value="${m.scoreA ?? ''}"
-          ${m.locked ? 'disabled' : ''}>
-
-        <span class="vs">vs</span>
-
-        <input
-          id="${m.id}_b"
-          class="score-input"
-          type="number"
-          min="0"
-          value="${m.scoreB ?? ''}"
-          ${m.locked ? 'disabled' : ''}>
-
-        <span class="team-name">
-          ${b}
-        </span>
-
-      </div>
-
-    </div>
-  `;
-}
-
 async function lockMatch(e) {
   const id = e.target.dataset.lock;
   const scoreA = Number(document.getElementById(`${id}_a`).value);
@@ -234,3 +148,129 @@ async function maybeCreateFinals() {
   });
   await batch.commit();
 }
+
+function teamMembers(teamNo, players) {
+    return players
+        .filter(p => p.teamNo === teamNo)
+        .map(p => p.name)
+        .join(" / ");
+}
+
+function scoreCard(m, matchNo) {
+  const teamCount = getRealTeamCount(state.players, state.settings);
+  const a = teamLabel(m.teamA, state.teams, teamCount);
+  const b = teamLabel(m.teamB, state.teams, teamCount);
+
+  if (m.bye) {
+    return `
+      <div class="admin-match-card bye-card">
+
+        <div class="admin-match-top">
+          <div class="admin-match-info">
+            Match ${m.id} • Court ${m.court} • ${m.time || ''}
+          </div>
+
+          <button class="lock-btn" disabled>
+            ✓ BYE
+          </button>
+        </div>
+
+        <div class="admin-score-inline">
+          <div class="team-name">
+              <div class="team-name-main">
+                  ${a}
+              </div>
+
+              <div class="team-members-small">
+                  ${teamMembers(m.teamA, state.players)}
+              </div>
+          </div>
+
+          <input class="score-input" value="0" disabled>
+
+          <span class="vs">vs</span>
+
+          <input class="score-input" value="0" disabled>
+
+          <div class="team-name">
+              <div class="team-name-main">
+                  ${b}
+              </div>
+
+              <div class="team-members-small">
+                  ${teamMembers(m.teamB, state.players)}
+              </div>
+          </div>
+        </div>
+
+      </div>
+    `;
+  }
+
+  return `
+    <div class="admin-match-card ${m.locked ? 'locked-card' : ''}">
+
+      <div class="admin-match-top">
+
+      <div class="admin-match-info">
+          ${
+              m.stage === "playoff"
+                  ? `${m.roundName} • Court ${m.court}`
+                  : `Match ${m.match_num} • Court ${m.court} • ${m.time || ""}`
+          }
+      </div>
+
+        ${
+          m.locked
+            ? `<button class="lock-btn" data-unlock="${m.id}">Unlock</button>`
+            : `<button class="lock-btn" data-lock="${m.id}">Lock</button>`
+        }
+
+      </div>
+
+      <div class="admin-score-inline">
+
+        <div class="team-name">
+            <div class="team-name-main">
+                ${a}
+            </div>
+
+            <div class="team-members-small">
+                ${teamMembers(m.teamA, state.players)}
+            </div>
+        </div>
+
+        <input
+          id="${m.id}_a"
+          class="score-input"
+          type="number"
+          min="0"
+          value="${m.scoreA ?? ''}"
+          ${m.locked ? 'disabled' : ''}>
+
+        <span class="vs">vs</span>
+
+        <input
+          id="${m.id}_b"
+          class="score-input"
+          type="number"
+          min="0"
+          value="${m.scoreB ?? ''}"
+          ${m.locked ? 'disabled' : ''}>
+
+        <div class="team-name">
+            <div class="team-name-main">
+                ${b}
+            </div>
+
+            <div class="team-members-small">
+                ${teamMembers(m.teamB, state.players)}
+            </div>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+

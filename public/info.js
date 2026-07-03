@@ -8,7 +8,7 @@ let state = {
   settings: {}
 };
 
-let sortColumn = "name";
+let sortColumn = "teamNo";
 let ascending = true;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -53,8 +53,14 @@ function render() {
     }
 
     if (sortColumn === "teamNo") {
-      result = Number(a.teamNo || 0) - Number(b.teamNo || 0);
+
+    result = Number(a.teamNo || 0) - Number(b.teamNo || 0);
+
+    if (result === 0) {
+        result = a.name.localeCompare(b.name);
     }
+
+}
 
     return ascending ? result : -result;
   });

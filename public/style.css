@@ -600,3 +600,33 @@ h2 {
     font-size:13px;
     text-transform:uppercase;
 }
+
+.admin-match-card.locked-card .lock-btn{
+    background:#dc2626;
+}
+
+.admin-score-inline .team-name{
+    display:flex;
+    flex-direction:column;
+}
+
+.admin-score-inline .team-name:last-child{
+    align-items:flex-end;
+}
+
+.team-name-main{
+    font-weight:700;
+    font-size:16px;
+}
+
+.team-members-small{
+    font-size:12px;
+    color:#64748b;
+    margin-top:2px;
+    line-height:1.25;
+}
+
+#playoffMatches{
+    display:grid;
+    gap:16px;
+}

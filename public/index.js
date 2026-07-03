@@ -46,8 +46,85 @@ BYE wins = 1 W / 0 L / 0 PF / 0 PA / 0 D
 
   if (!standings.length) body.innerHTML = '<tr><td colspan="7">No teams yet.</td></tr>';
 
-  const playoffs = matches.filter((m) => m.stage === 'playoff');
-  $('playoffStandings').innerHTML = playoffs.length
-    ? playoffs.map((m) => `<div class="card"><div class="match-title"><strong>${m.roundName || 'Playoff'}</strong><span>Court ${m.court || '-'}</span></div><div class="score-line">${teamLabel(m.teamA, teams, teamCount)} <strong>${formatScore(m)}</strong> ${teamLabel(m.teamB, teams, teamCount)}</div></div>`).join('')
-    : '<div class="card">Playoffs not generated yet.</div>';
+  const playoffs = matches.filter(m => m.stage === "playoff");
+
+  const final = playoffs.find(m => m.id === "final");
+  const third = playoffs.find(m => m.id === "third_place");
+
+  let rankings = [];
+
+  if (final?.locked) {
+
+      rankings.push(final.winner);
+
+      rankings.push(
+          final.winner === final.teamA
+              ? final.teamB
+              : final.teamA
+      );
+
+  }
+
+  if (third?.locked) {
+
+      rankings.push(third.winner);
+
+      rankings.push(
+          third.winner === third.teamA
+              ? third.teamB
+              : third.teamA
+      );
+
+  }
+
+  if (!rankings.length) {
+
+      $("playoffStandings").innerHTML =
+          `<div class="card">Playoff rankings will appear once the Final and Third Place matches are complete.</div>`;
+
+  } else {
+
+      const medals = ["🥇","🥈","🥉","4️⃣"];
+
+      $("playoffStandings").innerHTML = `
+          <div class="table-wrap">
+
+              <table class="standings-table">
+
+                  <thead>
+
+                      <tr>
+                          <th>Rank</th>
+                          <th>Team</th>
+                          <th>Players</th>
+                      </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                      ${rankings.map((teamNo, i) => `
+
+                          <tr>
+
+                              <td>${medals[i] || i + 1}</td>
+
+                              <td>${teamLabel(teamNo, teams, teamCount)}</td>
+
+                              <td>${teamMembers(teamNo, players)}</td>
+
+                          </tr>
+
+                      `).join("")}
+
+                  </tbody>
+
+              </table>
+
+          </div>
+      `;
+
+  }
+
+
 });

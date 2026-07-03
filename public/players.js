@@ -17,12 +17,27 @@ $('saveTeamsBtn').addEventListener('click', saveTeams);
 
 watchTournament((data) => {
   state = data;
+
+  const locked = state.settings.tournamentGenerated;
+
+  $("playerName").disabled = locked;
+  $("playerSkill").disabled = locked;
+  $("addPlayerBtn").disabled = locked;
+  $("generateTeamsBtn").disabled = locked;
+  $("saveTeamsBtn").disabled = locked;
+
   renderPlayers();
   renderTeamAssignments();
   renderTeamCards();
 });
 
 async function addPlayer() {
+
+  if (state.settings.tournamentGenerated) {
+    alert("The tournament has already been generated. Reset the tournament before adding players.");
+    return;
+  }
+
   const name = $('playerName').value.trim();
   if (!name) return alert('Enter player name.');
 
@@ -51,7 +66,7 @@ function renderPlayers() {
         <td><input class="table-input" value="${escapeHtml(p.name)}" data-player-name="${p.id}"></td>
         <td>
           <select class="table-input" data-player-skill="${p.id}">
-            ${[1,2,3,4,5].map((n) => `<option value="${n}" ${p.skill === n ? 'selected' : ''}>${skillLabel(n)}</option>`).join('')}
+            ${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${p.skill === n ? 'selected' : ''}>${skillLabel(n)}</option>`).join('')}
           </select>
         </td>
         <td><button class="danger-small" data-delete-player="${p.id}">Delete</button></td>
@@ -74,12 +89,26 @@ function renderPlayers() {
   });
 
   document.querySelectorAll('[data-delete-player]').forEach((btn) => {
+
+    btn.disabled = state.settings.tournamentGenerated;
+
     btn.addEventListener('click', async (e) => {
+
+      if (state.settings.tournamentGenerated) {
+        alert("The tournament has already been generated. Reset the tournament before modifying players.");
+        return;
+      }
+
       const player = state.players.find((p) => p.id === e.target.dataset.deletePlayer);
+
       if (!confirm(`Delete ${player?.name || 'this player'}?`)) return;
+
       await deleteDoc(doc(db, 'players', e.target.dataset.deletePlayer));
+
     });
+
   });
+
 }
 
 function renderTeamAssignments() {
@@ -100,15 +129,29 @@ function renderTeamAssignments() {
           <select class="table-input team-number-select" data-player-team="${p.id}">
             <option value="0" ${!p.teamNo ? 'selected' : ''}>-</option>
             ${Array.from({ length: teamCount }, (_, i) => i + 1)
-              .map((n) => `<option value="${n}" ${p.teamNo === n ? 'selected' : ''}>Team ${n}</option>`).join('')}
+        .map((n) => `<option value="${n}" ${p.teamNo === n ? 'selected' : ''}>Team ${n}</option>`).join('')}
           </select>
         </td>
       </tr>
     `).join('');
 
+  const locked = state.settings.tournamentGenerated;
+
   document.querySelectorAll('[data-player-team]').forEach((select) => {
     select.addEventListener('change', async (e) => {
-      await updateDoc(doc(db, 'players', e.target.dataset.playerTeam), { teamNo: Number(e.target.value) });
+
+      if (state.settings.tournamentGenerated) {
+        alert("The tournament has already been generated. Reset the tournament before modifying teams.");
+        e.target.value = state.players.find(
+          p => p.id === e.target.dataset.playerTeam
+        )?.teamNo || 0;
+        return;
+      }
+
+      await updateDoc(doc(db, 'players', e.target.dataset.playerTeam), {
+        teamNo: Number(e.target.value)
+      });
+
       setValidation('Team number changed. Save teams when ready.', true);
     });
   });
@@ -129,14 +172,20 @@ function renderTeamCards() {
       <div class="card team-card">
         <div class="team-title">Team ${teamNo}</div>
         ${players.length
-          ? players.map((p) => `<div class="team-player"><span>${escapeHtml(p.name)}</span><span>${skillStars(p.skill)}</span></div>`).join('')
-          : '<div class="subtle">No players assigned.</div>'}
+        ? players.map((p) => `<div class="team-player"><span>${escapeHtml(p.name)}</span><span>${skillStars(p.skill)}</span></div>`).join('')
+        : '<div class="subtle">No players assigned.</div>'}
       </div>
     `;
   }).join('');
 }
 
 async function shuffleTeams() {
+
+  if (state.settings.tournamentGenerated) {
+    alert("The tournament has already been generated. Reset the tournament before modifying teams.");
+    return;
+  }
+
   const players = state.players;
   if (!players.length) return alert('Add players first.');
   if (players.length % 2) return alert(`There are ${players.length} players. Add one more player.`);
@@ -158,10 +207,16 @@ async function shuffleTeams() {
   }, { merge: true });
 
   await batch.commit();
-  setValidation('Teams shuffled. Keep clicking Shuffle Teams to randomize again.', true);
+  setValidation('Teams shuffled.', true);
 }
 
 async function saveTeams() {
+
+  if (state.settings.tournamentGenerated) {
+    alert("The tournament has already been generated. Reset the tournament before modifying teams.");
+    return;
+  }
+
   const result = validateTeams(state.players);
   setValidation(result.message, result.ok);
   if (!result.ok) return;
