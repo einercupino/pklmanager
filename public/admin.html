@@ -9,11 +9,11 @@
 </head>
 
 <body>
-    <nav class="top-nav"><a href="index.html">Standings</a><a href="matches.html">Matches</a><a class="active"
+    <nav class="top-nav"><a href="index.html">Standings</a><a href="matches.html">Matches</a><a href="info.html">Players</a><a class="active"
             href="admin.html">Admin</a><a href="players.html">Teams</a></nav>
     <main class="container wide">
-        
-        <div class="tabs"><button class="tab-button active" data-tab="group">Group Scores</button><button
+
+        <div class="tabs"><button class="tab-button active" data-tab="group">Group Stage Scores</button><button
                 class="tab-button" data-tab="playoffs">Playoff Scores</button></div>
         <section id="groupTab">
             <div id="adminGroupMatches"></div>
@@ -24,16 +24,10 @@
 
         <div class="admin-actions card">
 
-        <div class="admin-header-row">
-            <input
-                id="tournamentName"
-                class="input-field"
-                placeholder="Tournament">
+            <div class="admin-header-row">
+                <input id="tournamentName" class="input-field" placeholder="Tournament">
 
-            <input
-                id="startTime"
-                class="input-field time-field"
-                type="time">
+                <input id="startTime" class="input-field time-field" type="time">
             </div>
 
             <button id="saveSettingsBtn" class="primary-button">

@@ -70,8 +70,8 @@ async function generatePlayoffs() {
   if (standings.length < 4) return alert('Need at least 4 teams.');
 
   const playoffMatches = [
-    { id: 'semi_1', stage: 'playoff', round: 1, roundName: 'Semi Final 1', court: 1, teamA: standings[0].teamNo, teamB: standings[3].teamNo, scoreA: '', scoreB: '', winner: 0, locked: false },
-    { id: 'semi_2', stage: 'playoff', round: 1, roundName: 'Semi Final 2', court: 2, teamA: standings[1].teamNo, teamB: standings[2].teamNo, scoreA: '', scoreB: '', winner: 0, locked: false }
+    { id: 'semi_1', stage: 'playoff', round: 1, roundName: 'Semi Final 1', court: 4, teamA: standings[0].teamNo, teamB: standings[3].teamNo, scoreA: '', scoreB: '', winner: 0, locked: false },
+    { id: 'semi_2', stage: 'playoff', round: 1, roundName: 'Semi Final 2', court: 5, teamA: standings[1].teamNo, teamB: standings[2].teamNo, scoreA: '', scoreB: '', winner: 0, locked: false }
   ];
 
   const batch = writeBatch(db);
@@ -118,7 +118,7 @@ function scoreCard(m, matchNo) {
 
         <div class="admin-match-top">
           <div class="admin-match-info">
-            Match ${m.match_num} • Court ${m.court} • ${m.time || ''}
+            Match ${m.id} • Court ${m.court} • ${m.time || ''}
           </div>
 
           <button class="lock-btn" disabled>
@@ -225,11 +225,11 @@ async function maybeCreateFinals() {
 
   const batch = writeBatch(db);
   batch.set(doc(db, 'matches', 'final'), {
-    id: 'final', stage: 'playoff', round: 2, roundName: 'Final', court: 1,
+    id: 'final', stage: 'playoff', round: 2, roundName: 'Final', court: 4,
     teamA: semi1.winner, teamB: semi2.winner, scoreA: '', scoreB: '', winner: 0, locked: false
   });
   batch.set(doc(db, 'matches', 'third_place'), {
-    id: 'third_place', stage: 'playoff', round: 2, roundName: 'Third Place', court: 2,
+    id: 'third_place', stage: 'playoff', round: 2, roundName: 'Third Place', court: 5,
     teamA: loser1, teamB: loser2, scoreA: '', scoreB: '', winner: 0, locked: false
   });
   await batch.commit();

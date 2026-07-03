@@ -530,3 +530,73 @@ h2 {
   color:#64748b;
   font-weight:800;
 }
+
+.sortable{
+
+    cursor:pointer;
+    user-select:none;
+
+}
+
+.sortable:hover{
+
+    color:#2563eb;
+
+}
+
+.team-name{
+    font-weight:700;
+}
+
+.team-members{
+    margin-top:2px;
+    font-size:12px;
+    color:#64748b;
+    font-weight:500;
+}
+
+.match-score-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    gap:14px;
+    margin-top:10px;
+}
+
+.team-side.left{
+    text-align:left;
+}
+
+.team-side.right{
+    text-align:right;
+}
+
+.team-title{
+    font-weight:700;
+    font-size:15px;
+}
+
+.team-members-small{
+    font-size:12px;
+    color:#64748b;
+    margin-top:2px;
+}
+
+.score-center{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:700;
+}
+
+.score{
+    font-size:22px;
+    min-width:22px;
+    text-align:center;
+}
+
+.score-center .vs{
+    color:#64748b;
+    font-size:13px;
+    text-transform:uppercase;
+}
